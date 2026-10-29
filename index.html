@@ -341,6 +341,21 @@ rec=new SR();rec.lang='en-US';rec.interimResults=true;const base=$('#qt').value;
 rec.onresult=e=>{$('#qt').value=(base+' '+[...e.results].map(r=>r[0].transcript).join('')).trim()};
 rec.onend=()=>{rec=null;b.classList.remove('on');b.textContent='🎙 Record'};rec.onerror=()=>toast('Microphone unavailable or permission denied');
 try{rec.start();b.classList.add('on');b.textContent='⏹ Stop'}catch(x){rec=null}};
+/* ---- AI connection: Claude's built-in AI when inside Claude, otherwise our own /api/tutor backend ---- */
+const API_URL='/api/tutor';
+const b64=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(b)});
+async function prepImage(f){try{const bmp=await createImageBitmap(f),sc=Math.min(1,1280/Math.max(bmp.width,bmp.height)),c=document.createElement('canvas');c.width=Math.round(bmp.width*sc);c.height=Math.round(bmp.height*sc);c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));return{type:'image/jpeg',data:await b64(b)}}catch(e){return{type:f.type||'image/png',data:await b64(f)}}}
+async function apiSample(input,opts){opts=opts||{};
+const msgs=typeof input==='string'?[{role:'user',content:input}]:input.map(m=>({role:m.role,content:m.content}));
+const images=[];for(const f of (opts.images||[]).slice(0,3))images.push(await prepImage(f));
+let r;try{r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:msgs,images})})}catch(e){throw{code:'none',message:'The AI service could not be reached.'}}
+if(r.status===404||r.status===405)throw{code:'none',message:'The AI service is not set up on this site.'};
+if(r.status===429)throw{code:'rate_limited',message:'Too many requests. Please wait a few minutes and try again.'};
+const j=await r.json().catch(()=>({}));if(!r.ok)throw{code:'error',message:j.error||'The AI service had a problem.'};
+if(opts.onText)opts.onText({text:j.text,delta:j.text});
+return{text:j.text,truncated:!!j.truncated}}
+apiSample.limits=async()=>({images:true});
+async function getSample(){if(window.claude&&claude.use){try{const s=await claude.use('sample');if(s)return s}catch(e){}}return apiSample}
 function offlineTutor(q,sub){const w=(q||'').toLowerCase().split(/\W+/).filter(x=>x.length>3);let best=null,sc=0;LES.forEach(l=>{const tx=(l[0]+' '+l[1]+' '+l[3].join(' ')).toLowerCase(),s=w.filter(k=>tx.includes(k)).length;if(s>sc){sc=s;best=l}});
 return best?'The AI tutor is offline, but your **'+best[1]+'** lesson may help:\n\n'+best[3].join('\n\n'):'The AI tutor is offline right now, so I can’t answer that. Your question was saved. Open this page from its Claude link to chat with the tutor, or browse the lessons under Tutoring.'}
 async function send(){const t=$('#qt').value.trim();if((!t&&!files.length)||busy)return;if(rec)rec.stop();const sub=$('#sub').value;
@@ -349,7 +364,7 @@ Q.unshift({s:sub,t:t||'(attachment)',w:new Date().toLocaleString()});store.set('
 const imgs=files.filter(f=>f.type.startsWith('image/')),docs=files.filter(f=>!f.type.startsWith('image/'));let extra='';
 for(const d of docs){if(/^text\/|json|csv/.test(d.type)||/\.(txt|md|csv)$/i.test(d.name))extra+='\n[File '+d.name+']\n'+(await d.text()).slice(0,6000);else extra+='\n[Attached file '+d.name+' — its contents cannot be read in the browser]'}
 files=[];drawFiles();$('#qt').value='';CH.push({r:'a',t:'Thinking…'});drawQ();busy=true;$('#sd').disabled=true;
-try{const sample=window.claude&&await claude.use('sample');if(!sample)throw{code:'none'};
+try{const sample=await getSample();if(!sample)throw{code:'none'};
 const prior=CH.slice(0,-1).slice(-7).map(m=>({role:m.r==='u'?'user':'assistant',content:m.t}));
 prior[prior.length-1].content='You are the friendly ICP LearnHub tutor for school students. Explain simply and accurately in short steps, give one real-life example, and end with one quick check question. If an image or file is included, help with what it shows. Keep it under 250 words.\n\nSubject: '+sub+'\n\nStudent question: '+(t||'Please help me with the attached material.')+extra;
 const o={cache:false,onText:({text})=>{CH[CH.length-1].t=text;drawQ()}};
@@ -395,7 +410,7 @@ $('#qcard').innerHTML=`<div class="qhead"><select id="qsel" aria-label="Jump to 
 <div class="qfoot"><span class="note">Score: ${cfg.instant?score()+' correct of '+an+' answered':'shown after you submit the test'}</span><button type="button" class="subm" data-act="fin">Review &amp; finish test</button></div>`}
 function drawChat(){$('#qmsgs').innerHTML=qz.chat.length?qz.chat.map(m=>`<div class="m ${m.r}"><div class="b">${md(m.t)}</div></div>`).join(''):'<div class="empty"><h3>Stuck on a question?</h3><p>I can explain concepts or break down questions while you take this quiz.</p></div>';$('#qmsgs').scrollTop=1e9;$('#qchips').innerHTML=['Explain this question','Give me a hint'].map(t=>`<button type="button" data-act="cs">${t}</button>`).join('')}
 async function qchat(text){text=(text||'').trim();if(!text||qz.busy)return;const q=qz.l[qz.i],rev=qz.lock[qz.i];qz.chat.push({r:'u',t:text},{r:'a',t:'Thinking…'});qz.busy=true;drawChat();
-try{const sample=window.claude&&await claude.use('sample');if(!sample)throw{code:'none'};
+try{const sample=await getSample();if(!sample)throw{code:'none'};
 const ctx='You are the friendly ICP LearnHub tutor helping a student during a practice quiz. Current question ('+q.s+'): "'+q.q+'" Choices: '+q.o.map((t,k)=>L[k]+') '+t).join(' | ')+'. '+(rev?'The student already submitted this question; the correct answer is '+L[q.a]+') '+q.o[q.a]+'.':'The student has NOT answered yet: explain the concepts and give hints, but do NOT reveal or state which choice is correct.')+' Reply in under 150 words, simply and kindly.';
 const msgs=qz.chat.slice(0,-1).slice(-7).map(m=>({role:m.r==='u'?'user':'assistant',content:m.t}));msgs[msgs.length-1].content=ctx+'\n\nStudent: '+text;
 const r=await sample(msgs,{cache:false,onText:({text})=>{qz.chat[qz.chat.length-1].t=text;drawChat()}});qz.chat[qz.chat.length-1].t=r.text||'Sorry, I could not answer that.'}
@@ -437,7 +452,7 @@ return dec(out)}
 function loadScript(u){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=u;s.onload=res;s.onerror=()=>rej(Error('Could not load the PDF reader. Check your connection and try again.'));document.head.appendChild(s)})}
 async function pdfText(buf){if(!window.pdfjsLib){const b='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';await loadScript(b+'pdf.min.js');await loadScript(b+'pdf.worker.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc=b+'pdf.worker.min.js'}
 const d=await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise;let t='';for(let i=1;i<=Math.min(d.numPages,40);i++){const c=await(await d.getPage(i)).getTextContent();t+=c.items.map(x=>x.str).join(' ')+'\n'}return t}
-async function readImage(f){const sample=window.claude&&await claude.use('sample');if(!sample)throw Error('Reading images needs the AI tutor, which is not available right now. Try a PDF, DOCX, PPTX or TXT file.');const l=await sample.limits();if(!l||!l.images)throw Error('Image reading is not available right now. Try a PDF, DOCX, PPTX or TXT file.');
+async function readImage(f){const sample=await getSample();if(!sample)throw Error('Reading images needs the AI tutor, which is not available right now. Try a PDF, DOCX, PPTX or TXT file.');const l=await sample.limits();if(!l||!l.images)throw Error('Image reading is not available right now. Try a PDF, DOCX, PPTX or TXT file.');
 const r=await sample('Transcribe all of the lesson content in this image as plain text, including headings, definitions, formulas and diagram labels. If it contains no readable lesson material, reply with exactly: NO TEXT',{images:[f],cache:false});return /^\s*NO TEXT/i.test(r.text)?'':r.text}
 async function loadLesson(f){lpE('');const ext=(f.name.split('.').pop()||'').toLowerCase(),img=f.type.startsWith('image/')||['png','jpg','jpeg','webp','gif'].includes(ext);
 if(f.size>15e6)return lpE('That file is over 15 MB. Please choose a smaller file.');
@@ -458,7 +473,7 @@ $('#lpx').onclick=()=>{LS=null;LQ=[];$('#lpi').hidden=true;$('#lpg').hidden=true
 $('#lpp').onclick=()=>{if(!LS)return;$('#lpvt').textContent=LS.name;$('#lpvb').innerHTML=(LS.img?'<img src="'+LS.img+'" alt="Uploaded lesson" style="max-width:100%;border-radius:10px">':'')+'<p class="note">'+(LS.img?'Text read from the image:':'Text read from the file:')+'</p><pre>'+esc(LS.text.slice(0,4000))+(LS.text.length>4000?'\n…':'')+'</pre>';$('#lpv').showModal()};
 $('#lpvc').onclick=()=>$('#lpv').close();
 $('#lpgo').onclick=async()=>{if(!LS)return;lpE('');const n=+$('#lpn').value,dif=$('#lpd').value,b=$('#lpgo');b.disabled=true;lpS('Generating '+n+' '+dif.toLowerCase()+' questions from your lesson…');
-try{const sample=window.claude&&await claude.use('sample');if(!sample)throw Error('The AI question writer is not available (permission was not granted).');
+try{const sample=await getSample();if(!sample)throw Error('The AI question writer is not available (permission was not granted).');
 const body=LS.text.slice(0,14000);
 const r=await sample(`You write multiple-choice practice questions for school students. Using ONLY the lesson below, write exactly ${n} questions at ${dif} difficulty (Easy = recall of key facts, Medium = understanding, Hard = application and reasoning). Each question has exactly 4 choices and exactly one correct answer; make the wrong choices plausible. Add a 1-2 sentence explanation of why the correct answer is right, without mentioning letters. Respond with ONLY a JSON array, no markdown, in this form: [{"q":"question","o":["choice","choice","choice","choice"],"a":0,"e":"explanation"}] where a is the index (0-3) of the correct choice.\n\nLESSON:\n${body}`,{cache:false});
 let t=r.text.trim(),i=t.indexOf('['),j=t.lastIndexOf(']'),arr;try{arr=JSON.parse(t.slice(i,j+1))}catch(x){throw Error(r.truncated?'The test was too long to finish. Try fewer questions.':'I could not build a test from this lesson. Please try again.')}
