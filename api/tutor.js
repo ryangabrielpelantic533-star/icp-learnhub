@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const key = process.env.GEMINI_API_KEY;
+  const key = (process.env.GEMINI_API_KEY || '').replace(/[^\x21-\x7E]/g, '');
   if (!key) return res.status(500).json({ error: 'The server is missing GEMINI_API_KEY.' });
 
   const allowed = process.env.ALLOWED_ORIGIN; // optional, e.g. https://your-site.vercel.app
@@ -68,6 +68,6 @@ module.exports = async (req, res) => {
     if (!text) return res.status(502).json({ error: 'The AI returned no answer. Try rephrasing.' });
     return res.status(200).json({ text, truncated: cand.finishReason === 'MAX_TOKENS' });
   } catch (e) {
-    return res.status(502).json({ error: 'Could not reach Gemini.' });
+    return res.status(502).json({ error: 'Could not reach Gemini: ' + String((e && (e.cause && e.cause.message || e.message)) || e).slice(0, 200) });
   }
 };
