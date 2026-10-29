@@ -370,7 +370,7 @@ prior[prior.length-1].content='You are the friendly ICP LearnHub tutor for schoo
 const o={cache:false,onText:({text})=>{CH[CH.length-1].t=text;drawQ()}};
 if(imgs.length){const l=await sample.limits();if(l&&l.images)o.images=imgs.slice(0,3)}
 const r=await sample(prior,o);CH[CH.length-1].t=r.text||'Sorry, I could not answer that.'}
-catch(x){CH[CH.length-1].t=x&&(x.code==='none'||x.code==='not_granted')?offlineTutor(t,sub):'Something went wrong. Please try again in a moment.'}
+catch(x){CH[CH.length-1].t=x&&(x.code==='none'||x.code==='not_granted')?offlineTutor(t,sub):'Something went wrong. Please try again in a moment.'+(x&&x.message?' ('+x.message+')':'')}
 finally{busy=false;$('#sd').disabled=false;store.set('icp_chat',CH.slice(-40));drawQ()}}
 $('#sd').onclick=send;$('#qt').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}};
 $('#clr').onclick=()=>{CH=[];store.set('icp_chat',[]);drawQ()};
@@ -414,7 +414,7 @@ try{const sample=await getSample();if(!sample)throw{code:'none'};
 const ctx='You are the friendly ICP LearnHub tutor helping a student during a practice quiz. Current question ('+q.s+'): "'+q.q+'" Choices: '+q.o.map((t,k)=>L[k]+') '+t).join(' | ')+'. '+(rev?'The student already submitted this question; the correct answer is '+L[q.a]+') '+q.o[q.a]+'.':'The student has NOT answered yet: explain the concepts and give hints, but do NOT reveal or state which choice is correct.')+' Reply in under 150 words, simply and kindly.';
 const msgs=qz.chat.slice(0,-1).slice(-7).map(m=>({role:m.r==='u'?'user':'assistant',content:m.t}));msgs[msgs.length-1].content=ctx+'\n\nStudent: '+text;
 const r=await sample(msgs,{cache:false,onText:({text})=>{qz.chat[qz.chat.length-1].t=text;drawChat()}});qz.chat[qz.chat.length-1].t=r.text||'Sorry, I could not answer that.'}
-catch(x){qz.chat[qz.chat.length-1].t=x&&(x.code==='none'||x.code==='not_granted')?'The AI tutor is not available (permission was not granted).':'Something went wrong. Please try again in a moment.'}
+catch(x){qz.chat[qz.chat.length-1].t=x&&(x.code==='none'||x.code==='not_granted')?'The AI tutor is not available (permission was not granted).':'Something went wrong. Please try again in a moment.'+(x&&x.message?' ('+x.message+')':'')}
 finally{qz.busy=false;drawChat()}}
 function drawReview(){const n=qz.l.length,un=qz.ans.filter(a=>a===null).length;
 $('#qz').innerHTML=`<div class="qcard"><h3>Review your answers</h3><p class="note">${n-un} of ${n} answered.${un?' <b>'+un+' unanswered</b> — go back to answer them, or submit anyway.':' Ready to submit.'}</p>${qz.l.map((q,k)=>`<div class="ev"><time>Q${k+1}</time><span style="flex:1">${esc(q.q)}<br><span class="note">Your answer: ${qz.ans[k]===null?'<b>not answered</b>':L[qz.ans[k]]+') '+esc(q.o[qz.ans[k]])}</span></span><button type="button" class="tbtn" data-act="dot" data-k="${k}">${qz.ans[k]===null?'Answer':'View'}</button></div>`).join('')}<div class="qnav"><button type="button" class="tbtn" data-act="back">← Back to questions</button><button type="button" class="subm" data-act="submit">Submit test</button></div></div>`}
