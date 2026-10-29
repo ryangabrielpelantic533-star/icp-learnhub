@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ICP LearnHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#000;--bg2:#2b22b8;--ink:#fff;--mute:#c9d0ff;--acc:#7b8cff;--card:#1c1b2e;--field:#1f1f1f;--line:#5b6bff;--sky:#5ce1e6;--deep:#0047ab;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--card:#1c1b2e}}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:'Open Sans',system-ui,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--ink);min-height:100vh}
+h1,h2,h3,.logo{font-family:'Poppins',system-ui,sans-serif;margin:0}
+a{color:inherit}button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #ffd84d;outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(90deg,var(--sky),var(--deep))}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;text-decoration:none}
+.logo i{font-style:normal;width:32px;height:32px;border-radius:50%;background:#ffd84d;display:grid;place-items:center}
+.logo b{color:var(--acc)}
+nav{margin-left:auto;display:flex;gap:4px;align-items:center}
+nav a,nav button{background:none;border:0;color:#fff;padding:8px 10px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem}
+nav a:hover,nav a[aria-current]{background:#ffffff33}
+#menu{display:none;margin-left:auto;background:none;border:0;color:#fff;font-size:1.6rem}
+.pill{background:#0a0a2e;border:1px solid #fff4;border-radius:99px;padding:6px 16px;font-size:.8rem}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+.page{display:none}.page.on{display:block}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center;min-height:70vh}
+.hero h1{font-size:clamp(2.2rem,7vw,3.6rem)}.hero h1 b,.tag{color:var(--acc)}
+.tag{letter-spacing:.08em;font-weight:600}
+.cta{display:inline-block;background:#c2dcff;color:#111;border:2px solid #333;border-radius:99px;padding:16px 48px;font-weight:700;text-decoration:none;margin-top:12px}
+.shield{width:100%;max-width:320px;margin:auto;display:block}
+.panel{background:#4a4a4a;border-radius:20px;padding:22px;max-width:420px;margin:20px auto}
+.panel h2{text-align:center;margin-bottom:14px}
+label{display:block;font-weight:700;font-size:.9rem;margin:10px 4px 4px}
+input,textarea,select{width:100%;background:var(--field);color:#fff;border:1px solid #666;border-radius:99px;padding:12px 16px;font:inherit}
+textarea{border-radius:16px;min-height:90px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{background:#1f1f1f;color:#fff;border:1px solid #777;border-radius:99px;padding:12px 18px;font-weight:700;width:100%;margin-top:12px}
+.btn.p{background:var(--acc);color:#0a0a2e;border:0}
+.banner{background:linear-gradient(90deg,#000,#2b22b8);border-radius:20px;padding:20px;position:relative;margin-bottom:18px}
+.banner h2{font-size:1.5rem}.banner p{color:var(--mute);margin:.3rem 0 14px}
+.search{display:flex;align-items:center;background:#fff;border-radius:99px;padding:0 16px}
+.search input{background:none;color:#222;border:0;outline-offset:6px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{border-radius:14px;padding:18px;color:#333;display:grid;gap:6px}
+.card h3{font-size:1.15rem;color:#fff}.card p{margin:0;color:#444}
+.card a{justify-self:center;border:1.5px solid;border-radius:10px;padding:6px 26px;font-size:.8rem;font-weight:700;text-decoration:none;color:#333;margin-top:6px}
+.c1{background:#c3ccff}.c2{background:#d6f5cf}.c3{background:#ffe3b8}.c4{background:#dccbf7}
+.c1 h3{color:#3b3bd6}.c2 h3{color:#2b6b1a}.c3 h3{color:#c4801a}.c4 h3{color:#5a2aa8}
+.box{background:#ffffff1c;border-radius:16px;padding:16px;margin:12px 0}
+.cal-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px}
+.cal-wrap h2{font-weight:600;font-size:clamp(1.3rem,4vw,2rem);line-height:1.4;color:var(--mute);text-transform:uppercase}
+.cal{background:#6a8bff;border-radius:12px;overflow:hidden;color:#cfe0ff}
+.cal-top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#5a7df5}
+.cal-top h3{font-size:1.2rem}.cal-top button{background:#a9c2ff;border:0;border-radius:4px;padding:4px 10px}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr)}
+.dow div{text-align:center;font-weight:700;font-size:.75rem;padding:6px 0}
+.d{background:#9bbcff;border:1px solid #6a8bff;min-height:58px;padding:3px;font-size:.7rem;color:#3355cc;position:relative;text-align:left;border-radius:0}
+.d.o{opacity:.5}.d.t{outline:3px solid #ffd84d;outline-offset:-3px}
+.d .f{position:absolute;right:2px;top:12px;font-size:1.1rem}
+.d .e{display:block;font-size:.58rem;background:#fff;color:#222;border-radius:3px;margin-top:2px;padding:0 2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ev{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #fff2}
+.ev time{min-width:62px;font-weight:700;color:var(--acc)}
+.chip{font-size:.7rem;padding:2px 8px;border-radius:99px;background:#fff3}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.filters button{background:#ffffff22;border:1px solid #fff5;color:#fff;border-radius:99px;padding:5px 12px;font-size:.8rem}
+.filters button[aria-pressed=true]{background:var(--acc);color:#0a0a2e}
+.q{margin:10px 0}.q label{margin:4px 0;font-weight:600;display:flex;gap:8px;align-items:center}.q input{width:auto}
+.note{font-size:.8rem;color:var(--mute)}
+#toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#111;border:1px solid #fff5;padding:10px 18px;border-radius:99px;display:none;z-index:9}
+@media(max-width:720px){
+#menu{display:block}nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;background:#0a0a2e;padding:10px}nav.open{display:flex}
+.hero,.cal-wrap{grid-template-columns:1fr}.hero{min-height:0}.shield{max-width:200px}
+.grid{grid-template-columns:1fr}.d{min-height:44px}.d .e{display:none}.d .f{font-size:.8rem}}
+@media(prefers-reduced-motion:no-preference){.card{transition:transform .2s}.card:hover{transform:translateY(-3px)}}
+.exit{background:#ffd84d;color:#1a1a1a;border:0;border-radius:99px;padding:9px 16px;font-weight:800;font-size:.9rem;margin-left:8px;min-height:40px;white-space:nowrap;box-shadow:0 2px 8px #0006}.exit:hover{background:#fff}
+.chat{background:#16151f;border:1px solid #fff2;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;height:min(72vh,660px)}
+#msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.m{display:flex}.m.u{justify-content:flex-end}.m .b{max-width:85%;padding:10px 14px;border-radius:16px;line-height:1.55;overflow-wrap:anywhere}
+.m.u .b{background:var(--acc);color:#0a0a2e;border-bottom-right-radius:4px}.m.a .b{background:#2a2940;border-bottom-left-radius:4px}
+.comp{background:#26242f;border-top:1px solid #fff2;padding:12px}.comp textarea{background:#1a1a1a;border-radius:14px;min-height:56px;max-height:140px;resize:vertical}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.tools button{background:#1f1f1f;color:#fff;border:1px solid #666;border-radius:99px;padding:9px 14px;font-weight:700;font-size:.85rem}.tools button.on{background:#c0392b;border-color:#c0392b}
+.tools .send{margin-left:auto;background:var(--acc);color:#0a0a2e;border:0}.tools select{width:auto;padding:9px 12px}
+.fl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip button{background:none;border:0;color:#fff;padding:0 2px}
+dialog{background:#1c1b2e;color:#fff;border:1px solid #fff4;border-radius:16px;max-width:380px;padding:22px}dialog::backdrop{background:#000a}
+.back{background:none;border:1px solid #fff5;color:#fff;border-radius:99px;padding:7px 16px;margin-bottom:10px}
+@media(max-width:420px){.logo{font-size:.9rem}.exit{padding:8px 12px;font-size:.8rem;margin-left:4px}header{gap:6px;padding:8px 10px}.tools .send{margin-left:0;width:100%}}
+.qbar{display:flex;align-items:center;gap:12px;margin-bottom:14px}.prog{flex:1;height:14px;border-radius:99px;background:#1c1b2e;border:1px solid #fff2;overflow:hidden}.prog i{display:block;height:100%;background:linear-gradient(90deg,#34d399,#7b8cff);transition:width .3s}
+.cnt{background:#14532d;color:#86efac;font-weight:800;border-radius:99px;padding:6px 14px;font-size:.9rem;white-space:nowrap}
+.xbtn{background:#ffd84d;color:#1a1a1a;border:0;border-radius:99px;padding:8px 16px;font-weight:800;white-space:nowrap}
+.qgrid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:start}
+.qcard{background:#262522;border:1px solid #fff2;border-radius:22px;padding:20px}
+.qhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.qhead select{width:auto;border-radius:12px}
+.tagp{background:#4a2b20;color:#ffb199;border:1px solid #a5563b;border-radius:10px;padding:8px 12px;font-size:.85rem}
+.tbtn{background:#1d1c1a;color:#fff;border:1px solid #fff3;border-radius:12px;padding:9px 14px;font-weight:700;font-size:.85rem}.tbtn:disabled,.subm:disabled{opacity:.45;cursor:not-allowed}
+.qtx{font-family:'Open Sans',sans-serif;font-weight:400;font-size:1.25rem;line-height:1.55;margin:18px 0}
+.opt{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:#1d1c1a;color:#f5c9a0;border:2px solid #fff2;border-radius:18px;padding:14px;margin-bottom:10px;font-size:1rem;line-height:1.4}
+.opt .lt{flex:none;width:36px;height:36px;border-radius:50%;background:#2c2b28;display:grid;place-items:center;font-weight:700;color:#fff}
+.opt:hover:not(:disabled){border-color:var(--acc)}.opt.sel{border-color:var(--acc);background:#27264a}.opt.ok{border-color:#34d399;background:#12372a}.opt.no{border-color:#f87171;background:#3c1818}.opt:disabled{cursor:default}
+.fb{border-radius:14px;padding:12px 14px;margin:10px 0;line-height:1.5}.fb.ok{background:#12372a;border:1px solid #34d399}.fb.no{background:#3c1818;border:1px solid #f87171}
+.qnav{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin:14px 0}
+.subm{background:var(--acc);color:#0a0a2e;border:0;border-radius:12px;padding:10px 20px;font-weight:800}
+.dots{display:flex;flex-wrap:wrap;gap:6px}.dot{width:34px;height:34px;border-radius:50%;background:#1d1c1a;color:#fff;border:1px solid #fff3;font-weight:700}.dot.dn{background:#14532d}.dot.cur{outline:2px solid var(--acc)}
+.qfoot{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-top:14px}
+.qchat{background:#1f1e1c;border:1px solid #fff2;border-radius:22px;display:flex;flex-direction:column;height:min(78vh,640px);position:sticky;top:76px}
+.qch{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+#qmsgs{flex:1;overflow-y:auto;padding:0 14px;display:flex;flex-direction:column;gap:10px}
+.empty{margin:auto;text-align:center;color:var(--mute)}.empty h3{color:#fff;font-size:1.4rem;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 14px}.chips button{background:#2c2b28;color:#fff;border:1px solid #fff3;border-radius:99px;padding:6px 12px;font-size:.8rem}
+.cin{display:flex;gap:8px;padding:12px;align-items:flex-end}.cin textarea{border-radius:16px;min-height:50px;resize:none;background:#2a2926}.cin button{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--acc);color:#0a0a2e;font-weight:800}
+.res{text-align:center}.res .big{font-family:Poppins,sans-serif;font-size:3.5rem;font-weight:800;color:var(--acc)}.res .pct{color:var(--mute)}.res .fb{text-align:left}.res .qnav{justify-content:center}
+@media(max-width:820px){.qgrid{grid-template-columns:1fr}.qchat{position:static;height:480px}.qtx{font-size:1.1rem}}
+nav a[aria-current]{background:#ffffff45;box-shadow:inset 0 -3px #ffd84d}
+@media(max-width:960px){#menu{display:block;min-width:44px;min-height:44px}nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;background:#0a0a2e;padding:10px;box-shadow:0 10px 24px #0008}nav.open{display:flex}nav a,nav button{padding:13px 14px;text-align:left}nav a[aria-current]{box-shadow:inset 4px 0 #ffd84d}nav .pill{border-radius:10px}}
+.lph{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:8px}.lrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}.lrow label{display:inline;margin:0}.lrow select{width:auto;border-radius:12px}.fname{font-weight:700;overflow-wrap:anywhere;flex:1 1 220px}
+#lpv{width:min(92vw,640px);max-width:none}#lpvb{max-height:50vh;overflow:auto;margin:10px 0}#lpvb pre{white-space:pre-wrap;font:inherit;font-size:.9rem;color:var(--mute)}
+@media(max-width:560px){.lrow .subm,.lrow .tbtn{flex:1 1 auto}}
+.d{font-family:inherit;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;width:100%;cursor:pointer}.d:hover{background:#b5d0ff}
+.eh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.ev{flex-wrap:wrap}.et{flex:1 1 180px;min-width:0;overflow-wrap:anywhere}.eb{display:flex;gap:6px;flex-wrap:wrap}
+a.tbtn{text-decoration:none;display:inline-block;color:#fff}
+#ed,#cc{width:min(94vw,480px);max-width:none;max-height:92vh;overflow:auto}
+#ed input[type=date],#ed input[type=time]{color-scheme:dark}
+.edb{display:flex;flex-wrap:wrap;gap:8px}.edb .btn{flex:1 1 90px;margin-top:12px}.btn.dng{background:#7f1d1d;border-color:#f87171}
+.edx{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+#toast{max-width:90vw;text-align:center;border-radius:18px}
+</style></head><body>
+<header>
+<a class="logo" href="#home"><i aria-hidden="true">🎓</i>ICP <b>LearnHub</b></a>
+<button id="menu" aria-label="Menu" aria-expanded="false">☰</button>
+<nav id="nav" aria-label="Main">
+<a href="#dashboard">Home</a><a href="#ask">Ask</a><a href="#tutoring">Tutoring</a><a href="#calendar">Calendar</a><a href="#tests">Tests</a>
+<button id="bell" aria-label="Announcements">🔔<span id="bn"></span></button>
+<button id="lo" type="button" hidden>Log out</button><a class="pill" id="auth" href="#login">LOGIN</a>
+</nav><button class="exit" id="exit" type="button" aria-label="Exit to the Welcome page">⎋ Exit</button></header>
+<main>
+<section class="page" id="home"><div class="hero"><div>
+<div class="logo" style="margin-bottom:8px"><i aria-hidden="true">🎓</i>ICP <b>LearnHub</b></div>
+<div style="font-weight:700">WELCOME TO</div>
+<h1>ICP <b>LearnHub</b></h1>
+<p class="tag">Learn • Grow • Success</p>
+<p style="color:var(--mute);line-height:1.6;max-width:30em">This website is dedicated to help students achieve their goals of improving their knowledge in their subjects, grow and sharpen their skills, and stay consistent towards success.</p>
+<a class="cta" id="cta" href="#signup">Start for free →</a> <a class="cta" style="background:none;color:#fff;border-color:#fff8;padding:16px 32px" href="#login">Log in</a></div>
+<svg class="shield" viewBox="0 0 200 240" role="img" aria-label="School crest"><path d="M10 40Q100 0 190 40V130Q190 200 100 232Q10 200 10 130Z" fill="#0b1e5b"/><path d="M10 100h90v110Q10 180 10 130Z" fill="#ddd"/><path d="M100 100h90v30Q190 180 100 232Z" fill="#2fb8e0"/><path d="M70 28l15 14 15-18 15 18 15-14v22H70z" fill="#cfd8ff"/><text x="55" y="165" font-size="46" text-anchor="middle">🌿</text><text x="145" y="165" font-size="46" text-anchor="middle">📖</text></svg>
+</div></section>
+
+<section class="page" id="signup"><div class="panel"><h2 id="stt">Sign Up</h2>
+<button class="btn" id="goog" type="button">Continue with Google</button>
+<p style="text-align:center;margin:10px">OR</p>
+<form id="sf"><div class="row"><div><input id="fn" required aria-label="First name"><label for="fn">First name</label></div><div><input id="ln" required aria-label="Last name"><label for="ln">Last Name</label></div></div>
+<label for="em">Email</label><input id="em" type="email" required autocomplete="email">
+<label for="pw">Password</label><input id="pw" type="password" minlength="6" required autocomplete="new-password">
+<button class="btn p" type="submit">Create account</button></form><p class="note" style="text-align:center">Already registered? <a href="#login">Log in</a></p>
+<p class="note" style="text-align:center">Demo: accounts are stored only in this browser. Connect your school’s sign-in service for real accounts.</p></div></section>
+
+<section class="page" id="login"><div class="panel"><h2>Log In</h2><form id="lf"><label for="le">Email</label><input id="le" type="email" required autocomplete="email"><label for="lp">Password</label><input id="lp" type="password" required autocomplete="current-password"><p id="lerr" class="note" role="alert" style="color:#ffb4b4"></p><button class="btn p" type="submit">Log in</button></form><p class="note" style="text-align:center">New here? <a href="#signup">Create an account</a></p></div></section>
+<section class="page" id="dashboard">
+<div class="banner"><h2>Learn something new today.</h2><p>Ask questions, explore lessons, and get support from your school community.</p>
+<form class="search" role="search" id="srch"><span aria-hidden="true">🔍</span><input id="q" placeholder="Search lessons or questions…" aria-label="Search lessons or questions"></form></div>
+<div id="sres" class="box" hidden></div>
+<div class="grid">
+<div class="card c1"><h3>💬 Ask a Question</h3><p>Get help with lessons</p><a href="#ask">Ask Now</a></div>
+<div class="card c2"><h3>📖 Online Tutoring</h3><p>Study with learning materials</p><a href="#tutoring">Start Learning</a></div>
+<div class="card c3"><h3>📅 School Calendar</h3><p>Track events and deadlines</p><a href="#calendar">View Calendar</a></div>
+<div class="card c4"><h3>📝 Practice Tests</h3><p>Test your understanding</p><a href="#tests">Take a Quiz</a></div></div></section>
+
+<section class="page" id="calendar"><div class="cal-wrap"><div><h2>View your streaks, schedules and events here on the dynamic calendar</h2>
+<div class="box"><b>🔥 Streak: <span id="st">0</span> day(s)</b><p class="note">Visit daily to grow your streak.</p></div>
+<div class="box"><b>✏️ My calendar</b><p class="note">Tap a day, or add your own events, reminders and notes.</p><button class="btn p" type="button" data-ca="add">＋ Add event</button><button class="btn" id="ccb" type="button">📱 Connect to Phone Calendar</button></div>
+<div class="box"><b>School calendar sync</b><p class="note" id="sync">Showing built-in sample calendar.</p>
+<label for="ics">Import school .ics file</label><input type="file" id="ics" accept=".ics,text/calendar" style="border-radius:12px">
+<button class="btn" id="rst" type="button">Reset school events to sample</button></div></div>
+<div><div class="cal"><div class="cal-top"><button id="pv" aria-label="Previous month">◀</button><h3 id="mt" aria-live="polite"></h3><button id="nx" aria-label="Next month">▶</button></div>
+<div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="days" id="days"></div></div></div></div>
+<div class="filters" id="flt" role="group" aria-label="Filter events"></div>
+<div class="box" id="elist"></div>
+<dialog id="ed" aria-labelledby="edt"><form id="edf" novalidate><h3 id="edt">Add event</h3>
+<label for="e1">Title</label><input id="e1" maxlength="80" autocomplete="off">
+<div class="row"><div><label for="e2">Date</label><input id="e2" type="date"></div><div><label for="e3">Start time</label><input id="e3" type="time"></div></div>
+<div class="row"><div><label for="e4">Duration</label><select id="e4"><option value="15">15 min</option><option value="30">30 min</option><option value="45">45 min</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option><option value="180">3 hours</option><option value="240">4 hours</option></select></div><div><label for="e5">Category</label><select id="e5"><option>Class</option><option>Exam</option><option>Holiday</option><option selected>Event</option><option>Notice</option></select></div></div>
+<p class="note" style="margin:6px 4px">Leave the start time empty for an all-day event.</p>
+<label for="e6">Location</label><input id="e6" maxlength="80" autocomplete="off">
+<label for="e7">Reminder</label><select id="e7"><option value="">None</option><option value="0">At start time</option><option value="10">10 minutes before</option><option value="30">30 minutes before</option><option value="60">1 hour before</option><option value="1440">1 day before</option></select>
+<label for="e8">Notes</label><textarea id="e8" maxlength="500"></textarea>
+<p class="note">Reminders pop up here while the site is open, and travel with the event to your phone calendar.</p>
+<p id="ee" role="alert" style="color:#ffb4b4;margin:6px 4px"></p>
+<div class="edb"><button class="btn p" type="submit">Save</button><button class="btn" type="button" id="ec">Cancel</button><button class="btn dng" type="button" id="edl" hidden>Delete</button></div>
+<div class="edx" id="edx" hidden><b class="note">Add to phone:</b><a class="tbtn" id="egl" target="_blank" rel="noopener">＋ Google Calendar</a><button class="tbtn" type="button" id="edev">📱 Apple / device (.ics)</button></div></form></dialog>
+<dialog id="cc" aria-labelledby="cct"><h3 id="cct">Connect to Phone Calendar</h3><p class="note">Choose which events to add, then send them to your calendar app.</p>
+<label for="cs">Events to add</label><select id="cs"><option value="up">Upcoming events</option><option value="mine">My own events only</option><option value="month">Events in the month shown</option><option value="all">All events</option></select>
+<button class="btn p" id="cdev" type="button">📱 Add to Device Calendar</button>
+<p class="note">Works with Apple Calendar, Google Calendar and Outlook. It sends a calendar (.ics) file through your phone’s share sheet: on iPhone pick “Calendar”, on Android pick “Google Calendar”. Your reminders are included.</p>
+<p class="note"><b>Google Calendar, one event at a time:</b> open an event with ✎ Edit, then tap “＋ Google Calendar”, or use “＋G” beside it in the list.</p>
+<p id="cce" role="alert" style="color:#ffb4b4"></p><button class="btn" id="cx" type="button">Close</button></dialog></section>
+
+<section class="page" id="tutoring"><div class="banner"><h2>ONLINE <span class="tag">TUTORING</span></h2><p>Get your learning materials, tackle your last lessons and get help here on the online tutoring.</p></div>
+<div id="les"></div><a class="btn p" style="display:block;text-align:center;text-decoration:none" href="#ask">Need help? Ask a Question →</a></section>
+
+<section class="page" id="ask"><button class="back" type="button" id="bk">← Back to dashboard</button>
+<div class="banner"><h2>What do you want to learn?</h2><p>Type, record your voice, or upload a file or image — then submit to get help from your tutor.</p></div>
+<div class="chat"><div id="msgs" role="log" aria-live="polite"></div>
+<div class="comp"><label for="qt" class="note" style="margin:0 0 4px">Your question</label><textarea id="qt" placeholder="how do planes fly…"></textarea><div class="fl" id="fl"></div>
+<div class="tools"><select id="sub" aria-label="Subject"><option>Mathematics</option><option>English</option><option>Science</option><option>History</option><option>Other</option></select><button id="rec" type="button">🎙 Record</button><button id="up" type="button">📎 Upload</button><input type="file" id="fi" hidden multiple accept="image/*,.pdf,.doc,.docx,.txt,.md,.csv,.ppt,.pptx"><button class="send" id="sd" type="button">Submit ➤</button></div></div></div>
+<button class="btn" id="clr" type="button" style="max-width:200px">Clear chat</button>
+<div class="box" id="rq" style="margin-top:18px"></div></section>
+
+
+<section class="page" id="tests">
+<div class="box" id="lp"><div class="lph"><b>📄 Lesson Practice</b><span class="note">Upload a lesson, then generate a practice test from it.</span></div>
+<div class="lrow"><button class="subm" id="lpu" type="button">⬆ Upload Lesson</button><input type="file" id="lpf" hidden accept=".pdf,.docx,.pptx,.txt,image/*"><span class="note">PDF, DOCX, PPTX, TXT or image (up to 15 MB)</span></div>
+<div class="lrow" id="lpi" hidden><span class="fname" id="lpname"></span><button class="tbtn" id="lpp" type="button">👁 Preview</button><button class="tbtn" id="lpr" type="button">↻ Replace</button><button class="tbtn" id="lpx" type="button">✕ Remove</button></div>
+<div class="lrow" id="lpg" hidden><label for="lpn">Questions</label><select id="lpn"><option>5</option><option selected>10</option><option>15</option><option>20</option></select><label for="lpd">Difficulty</label><select id="lpd"><option>Easy</option><option selected>Medium</option><option>Hard</option></select><button class="subm" id="lpgo" type="button">Generate Practice Test</button></div>
+<p id="lps" class="note" role="status" aria-live="polite"></p><p id="lpe" role="alert" style="color:#ffb4b4;margin:4px 0"></p></div>
+<div id="qz"></div>
+<dialog id="lpv" aria-labelledby="lpvt"><h3 id="lpvt"></h3><div id="lpvb"></div><button class="btn" id="lpvc" type="button">Close</button></dialog>
+<dialog id="qs" aria-labelledby="qst"><h3 id="qst">Quiz Settings</h3><label for="s5">Question source</label><select id="s5"><option value="bank">Sample questions</option><option value="lesson">My uploaded lesson</option></select><p class="note">For lesson tests, choose the number of questions and difficulty in the Lesson Practice box.</p><label for="s1">Topic (sample questions)</label><select id="s1"><option>All</option><option>Mathematics</option><option>English</option><option>Science</option><option>History</option></select><label for="s2">Number of questions</label><select id="s2"><option value="5">5</option><option value="10">10</option><option value="12">All (12)</option></select>
+<label style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" id="s3" style="width:auto"> Show feedback right after each answer</label><label style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" id="s4" style="width:auto"> Shuffle questions</label>
+<p class="note">Applying settings restarts the test.</p><div class="row"><button class="btn" id="sx" type="button">Cancel</button><button class="btn p" id="sa" type="button">Apply &amp; restart</button></div></dialog></section>
+</main>
+<dialog id="dlg" aria-labelledby="dt"><h3 id="dt">Leave this page?</h3><p>You have unsaved changes. If you exit now they will be discarded.</p><div class="row"><button class="btn" id="stay" type="button">Stay</button><button class="btn p" id="go" type="button">Discard &amp; Exit</button></div></dialog>
+<dialog id="an" aria-labelledby="ant"><h3 id="ant">🔔 Announcements</h3><p class="note">Upcoming exams and notices from the school calendar.</p><div id="anb"></div><div class="row"><button class="btn" id="anc" type="button">Close</button><button class="btn p" id="ano" type="button">Open calendar</button></div></dialog>
+<div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const pad=n=>String(n).padStart(2,'0'),key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',Math.max(2600,m.length*55))};
+/* ---- School calendar data (replace SAMPLE with your official feed) ---- */
+const SAMPLE=[
+['2026-10-30','Midterm Exam: Mathematics','Exam'],['2026-11-02','Midterm Exam: English','Exam'],['2026-11-04','Midterm Exam: Science','Exam'],
+['2026-11-01','All Saints’ Day (No classes)','Holiday'],['2026-11-13','Educational Fair','Event'],['2026-11-17','Parent-Teacher Conference','Event'],
+['2026-11-26','Science Project Deadline','Class'],['2026-12-08','Immaculate Conception (Holiday)','Holiday'],['2026-12-14','Final Exams Begin','Exam'],
+['2026-12-19','Christmas Break Starts','Holiday'],['2026-10-28','Mon–Fri class schedule: 7:30 AM–3:00 PM','Class'],['2026-10-29','Announcement: Uniform inspection','Notice']
+].map(([d,t,c])=>({d,t,c}));
+function uid(){return 'e'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function normEV(l){return (Array.isArray(l)?l:[]).filter(e=>e&&e.d&&e.t).map(e=>({id:e.id||uid(),d:e.d,t:e.t,c:e.c||'Event',src:e.src||'school',time:e.time||'',dur:+e.dur||60,loc:e.loc||'',notes:e.notes||'',rem:e.rem==null?'':String(e.rem)}))}
+let EV=normEV(store.get('icp_ev',SAMPLE)),view=new Date(),cat='All';view.setDate(1);
+function mergeSchool(l){return [...EV.filter(e=>e.src==='mine'),...normEV(l).map(e=>({...e,src:'school'}))]}
+function saveEV(){try{localStorage.setItem('icp_ev',JSON.stringify(EV));return true}catch(x){return false}}
+const ANN=()=>EV.filter(e=>e.c==='Notice'||e.c==='Exam').filter(e=>e.d>=key(new Date()));
+/* ---- streaks ---- */
+const today=key(new Date());let days=store.get('icp_days',[]);if(!days.includes(today)){days.push(today);store.set('icp_days',days)}
+function streak(){let n=0,d=new Date();while(days.includes(key(d))){n++;d.setDate(d.getDate()-1)}return n}
+/* ---- calendar ---- */
+const fmtT=t=>{if(!t)return 'All day';const [h,m]=t.split(':').map(Number);return (h%12||12)+':'+pad(m)+' '+(h<12?'AM':'PM')};
+const sortEV=l=>l.sort((a,b)=>(a.d+(a.time||'00:00')).localeCompare(b.d+(b.time||'00:00')));
+function times(e){const cp=x=>x.replace(/-/g,'');if(!e.time){const n=new Date(e.d+'T00:00');n.setDate(n.getDate()+1);return{s:cp(e.d),en:cp(key(n)),all:true}}
+const st=new Date(e.d+'T'+e.time),en=new Date(st.getTime()+e.dur*60000),f=x=>cp(key(x))+'T'+pad(x.getHours())+pad(x.getMinutes())+'00';return{s:f(st),en:f(en),all:false}}
+function gcal(e){const t=times(e);return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(e.t)+'&dates='+t.s+'/'+t.en+'&details='+encodeURIComponent(e.notes||'')+'&location='+encodeURIComponent(e.loc||'')}
+function drawCal(){
+const y=view.getFullYear(),m=view.getMonth();$('#mt').textContent=view.toLocaleString('en',{month:'long',year:'numeric'});
+const start=new Date(y,m,1-new Date(y,m,1).getDay());let h='';
+for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const k=key(d);
+const es=sortEV(EV.filter(e=>e.d===k&&(cat==='All'||e.c===cat)));
+h+=`<button type="button" class="d${d.getMonth()!==m?' o':''}${k===today?' t':''}" data-ca="day" data-d="${k}" aria-label="${d.toDateString()}${es.length?', '+es.map(e=>esc(e.t)).join(', '):''}. Add event">${d.getDate()}${days.includes(k)?'<span class="f" aria-hidden="true">🔥</span>':''}${es.slice(0,2).map(e=>`<span class="e">${esc(e.t)}</span>`).join('')}</button>`}
+$('#days').innerHTML=h;$('#st').textContent=streak();
+const list=sortEV(EV.filter(e=>e.d.slice(0,7)===key(view).slice(0,7)&&(cat==='All'||e.c===cat)));
+$('#elist').innerHTML='<div class="eh"><b>Events this month</b><button type="button" class="subm" data-ca="add">＋ Add event</button></div>'+(list.map(e=>`<div class="ev"><time>${new Date(e.d+'T00:00').toLocaleDateString('en',{month:'short',day:'numeric'})}</time><span class="et"><b>${esc(e.t)}</b><br><span class="note">${fmtT(e.time)}${e.time?' · '+e.dur+' min':''}${e.loc?' · 📍 '+esc(e.loc):''}${e.rem!==''?' · ⏰':''}</span></span><span class="chip">${esc(e.c)}</span><span class="eb"><button type="button" class="tbtn" data-ca="edit" data-id="${e.id}" aria-label="Edit ${esc(e.t)}">✎ Edit</button><a class="tbtn" data-ca="gcal" href="${gcal(e)}" target="_blank" rel="noopener" aria-label="Add ${esc(e.t)} to Google Calendar">＋G</a><button type="button" class="tbtn" data-ca="ics" data-id="${e.id}" aria-label="Add ${esc(e.t)} to device calendar">📱</button></span></div>`).join('')||'<p class="note">No events this month. Tap a day or “Add event”.</p>');
+$('#flt').innerHTML=['All','Class','Exam','Holiday','Event','Notice'].map(c=>`<button aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join('')}
+$('#flt').onclick=e=>{if(e.target.dataset.c){cat=e.target.dataset.c;drawCal()}};
+$('#pv').onclick=()=>{view.setMonth(view.getMonth()-1);drawCal()};$('#nx').onclick=()=>{view.setMonth(view.getMonth()+1);drawCal()};
+$('#ics').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{
+const out=[];r.result.replace(/\r?\n[ \t]/g,'').split(/BEGIN:VEVENT/).slice(1).forEach(b=>{
+const g=n=>{const m=b.match(new RegExp('^'+n+'[^:\\n]*:(.*)$','m'));return m?m[1].trim().replace(/\\,/g,',').replace(/\\n/g,' '):''};
+const s=g('DTSTART'),t=g('SUMMARY');if(!s||!t)return;const d=s.slice(0,4)+'-'+s.slice(4,6)+'-'+s.slice(6,8);
+const c=/exam|test|quiz/i.test(t)?'Exam':/holiday|no class|break/i.test(t)?'Holiday':/announce|notice|reminder/i.test(t)?'Notice':/class|schedule|deadline/i.test(t)?'Class':'Event';out.push({d,t,c})});
+if(!out.length)return toast('No events found in file');EV=mergeSchool(out);if(!saveEV())return toast('Could not save the imported calendar. Please try again.');$('#sync').textContent='Synced '+out.length+' events from '+f.name+' on '+new Date().toLocaleString();drawCal();bell();toast('Calendar updated')};r.readAsText(f)};
+$('#rst').onclick=()=>{EV=mergeSchool(SAMPLE);if(!saveEV())return toast('Could not save the calendar. Please try again.');$('#sync').textContent='Showing built-in sample calendar.';drawCal();bell()};
+/* ---- event editing + phone calendar ---- */
+let editId=null,delArm=0;
+function openEd(id,date){editId=id||null;const e=id?EV.find(x=>x.id===id):null;if(id&&!e)return;
+$('#edt').textContent=e?'Edit event':'Add event';$('#e1').value=e?e.t:'';$('#e2').value=e?e.d:date;$('#e3').value=e?e.time:'';$('#e4').value=e?String(e.dur):'60';if(!$('#e4').value)$('#e4').value='60';
+$('#e5').value=e?e.c:'Event';$('#e6').value=e?e.loc:'';$('#e7').value=e?e.rem:'';$('#e8').value=e?e.notes:'';$('#ee').textContent='';
+$('#edl').hidden=!e;$('#edl').textContent='Delete';delArm=0;$('#edx').hidden=!e;if(e)$('#egl').href=gcal(e);$('#ed').showModal();$('#e1').focus()}
+$('#edf').onsubmit=ev=>{ev.preventDefault();const t=$('#e1').value.trim(),d=$('#e2').value;
+if(!t)return $('#ee').textContent='Please enter a title.';
+if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return $('#ee').textContent='Please choose a valid date.';
+const o={t,d,time:$('#e3').value,dur:+$('#e4').value||60,c:$('#e5').value,loc:$('#e6').value.trim(),notes:$('#e8').value.trim(),rem:$('#e7').value};
+const bak=EV,was=!!editId;
+EV=was?EV.map(x=>x.id===editId?{...x,...o,src:'mine'}:x):[...EV,{id:uid(),src:'mine',...o}];
+if(!saveEV()){EV=bak;return $('#ee').textContent='Could not save your event. Your browser may be blocking storage. Please try again.'}
+$('#ed').close();view=new Date(d+'T00:00');view.setDate(1);drawCal();bell();toast(was?'Event updated':'Event added')};
+$('#ec').onclick=()=>$('#ed').close();
+$('#edl').onclick=()=>{const b=$('#edl');if(!delArm){delArm=1;b.textContent='Tap again to confirm';setTimeout(()=>{delArm=0;b.textContent='Delete'},4000);return}
+delArm=0;const bak=EV;EV=EV.filter(x=>x.id!==editId);if(!saveEV()){EV=bak;return $('#ee').textContent='Could not delete the event. Please try again.'}$('#ed').close();drawCal();bell();toast('Event deleted')};
+const icsEsc=s=>String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
+function buildICS(list){const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//ICP LearnHub//Calendar//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'],stamp=new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+list.forEach(e=>{const t=times(e);L.push('BEGIN:VEVENT','UID:'+e.id+'@icplearnhub','DTSTAMP:'+stamp,t.all?'DTSTART;VALUE=DATE:'+t.s:'DTSTART:'+t.s,t.all?'DTEND;VALUE=DATE:'+t.en:'DTEND:'+t.en,'SUMMARY:'+icsEsc(e.t));
+if(e.loc)L.push('LOCATION:'+icsEsc(e.loc));if(e.notes)L.push('DESCRIPTION:'+icsEsc(e.notes));L.push('CATEGORIES:'+icsEsc(e.c));
+if(e.rem!==''){const m=+e.rem;L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(e.t),'TRIGGER:'+(m===0?'PT0S':m%1440===0?'-P'+m/1440+'D':'-PT'+m+'M'),'END:VALARM')}
+L.push('END:VEVENT')});L.push('END:VCALENDAR');return L.join('\r\n')}
+function calErr(m){toast(m);if($('#cc').open)$('#cce').textContent=m}
+async function sendICS(list,fname){list=list.filter(Boolean);if(!list.length){calErr('There are no events to add.');return false}
+const txt=buildICS(list);
+try{const f=new File([txt],fname,{type:'text/calendar'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'ICP LearnHub events'});toast(list.length+' event'+(list.length>1?'s':'')+' sent to your calendar app. Choose Calendar to finish adding.');return true}}
+catch(x){if(x&&x.name==='AbortError')return false}
+try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/calendar'}));a.download=fname;document.body.appendChild(a);a.click();a.remove();toast('Calendar file ready: '+fname+'. If nothing downloaded, use “＋ Google Calendar” on the event instead.');return true}
+catch(x){calErr('Could not create the calendar file. Please use “＋ Google Calendar” on the event instead.');return false}}
+$('#calendar').addEventListener('click',e=>{const b=e.target.closest('[data-ca]');if(!b)return;const a=b.dataset.ca;
+if(a==='day')openEd(null,b.dataset.d);
+else if(a==='add'){const n=new Date();openEd(null,view.getFullYear()===n.getFullYear()&&view.getMonth()===n.getMonth()?key(n):key(view))}
+else if(a==='edit')openEd(b.dataset.id);
+else if(a==='ics')sendICS([EV.find(x=>x.id===b.dataset.id)],'icp-event.ics');
+else if(a==='gcal')toast('Opening Google Calendar…')});
+$('#egl').onclick=()=>toast('Opening Google Calendar…');
+$('#edev').onclick=()=>sendICS([EV.find(x=>x.id===editId)],'icp-event.ics');
+$('#ccb').onclick=()=>{$('#cce').textContent='';$('#cc').showModal()};$('#cx').onclick=()=>$('#cc').close();
+$('#cdev').onclick=async()=>{const s=$('#cs').value,t=key(new Date());let l=EV;if(s==='up')l=EV.filter(e=>e.d>=t);else if(s==='mine')l=EV.filter(e=>e.src==='mine');else if(s==='month')l=EV.filter(e=>e.d.slice(0,7)===key(view).slice(0,7));
+$('#cce').textContent='';if(!l.length){$('#cce').textContent='There are no events to add for that choice.';return}if(await sendICS(sortEV(l.slice()),'icp-learnhub-events.ics'))$('#cc').close()};
+const fired=new Set();function checkRem(){const now=Date.now();EV.forEach(e=>{if(e.rem==='')return;const at=new Date(e.d+'T'+(e.time||'00:00')).getTime()-(+e.rem)*60000,k=e.id+e.d+e.time+e.rem;if(now>=at&&now<at+5*60000&&!fired.has(k)){fired.add(k);toast('⏰ Reminder: '+e.t+(e.time?' at '+fmtT(e.time):' today'))}})}
+setInterval(checkRem,30000);setTimeout(checkRem,1500);
+function bell(){$('#bn').textContent=ANN().length?' '+ANN().length:''}
+$('#bell').onclick=()=>{const l=sortEV(ANN().slice());$('#anb').innerHTML=l.length?l.map(e=>`<div class="ev"><time>${new Date(e.d+'T00:00').toLocaleDateString('en',{month:'short',day:'numeric'})}</time><span class="et"><b>${esc(e.t)}</b><br><span class="note">${esc(e.c)}${e.time?' · '+fmtT(e.time):''}</span></span></div>`).join(''):'<p class="note">No new announcements.</p>';$('#an').showModal()};
+$('#anc').onclick=()=>$('#an').close();$('#ano').onclick=()=>{$('#an').close();location.hash='calendar'};
+/* ---- tutoring ---- */
+const LES=[
+['Mathematics','Fractions & Decimals','Study notes + practice',['A fraction shows parts of a whole. In 3/4, the denominator (4) is how many equal parts the whole is cut into, and the numerator (3) is how many parts you have.','To add or subtract fractions, the denominators must match. 3/4 + 1/4 = 4/4 = 1. If they differ, find a common denominator first: 1/2 + 1/3 = 3/6 + 2/6 = 5/6.','To turn a fraction into a decimal, divide the top by the bottom: 1/4 = 1 ÷ 4 = 0.25. To go back, read the decimal as hundredths: 0.25 = 25/100 = 1/4.','Try it: what is 0.5 as a fraction? (Answer: 1/2.)']],
+['English','Essay Structure','Reading guide',['A good essay has three parts: an introduction, body paragraphs, and a conclusion.','Introduction: start with a hook that grabs the reader, give a little background, then state your thesis, the main point you will argue.','Body paragraphs: each one covers a single idea. Begin with a topic sentence, add evidence (a fact, example or quote), then explain how the evidence supports your thesis.','Conclusion: restate the thesis in fresh words, sum up your key points, and end with a closing thought. Use transitions such as “however”, “for example” and “as a result” to connect ideas.']],
+['Science','The Water Cycle','Study notes + lab ideas',['The water cycle is the continuous movement of water between the Earth’s surface and the atmosphere. The Sun’s heat powers it.','Evaporation: liquid water from oceans, rivers and lakes gains heat and becomes water vapor. Plants also release vapor through transpiration.','Condensation: as vapor rises and cools, it turns back into tiny droplets that form clouds.','Precipitation: when droplets grow heavy, they fall as rain, snow, sleet or hail. Collection: the water flows into rivers, soaks into the ground, or gathers in oceans, and the cycle starts again.']],
+['History','Philippine Revolution','Timeline notes',['1892: Andres Bonifacio and fellow revolutionaries founded the Katipunan, a secret society that aimed to win freedom from Spain.','August 1896: the Katipunan was discovered and the revolution began. On December 30, 1896, José Rizal was executed in Manila, and he became a symbol of the struggle.','June 12, 1898: Emilio Aguinaldo proclaimed Philippine independence in Kawit, Cavite.','Soon after, Spain ceded the Philippines to the United States under the Treaty of Paris (1898), and the Philippine–American War followed.']]
+];
+let done=store.get('icp_done',{});
+function drawLes(){const open=[...document.querySelectorAll('#les details')].map(d=>d.open),n=LES.length,c=LES.filter((_,i)=>done[i]).length;
+$('#les').innerHTML=`<div class="box"><b>Progress: ${c} of ${n} lessons completed</b><div class="prog" style="margin-top:8px" role="progressbar" aria-label="Lessons completed" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${c}"><i style="width:${c/n*100}%"></i></div></div>`+LES.map((l,i)=>`<div class="box"><span class="chip">${l[0]}</span><h3 style="margin:6px 0">${l[1]}</h3><p class="note">${l[2]}</p><details${open[i]?' open':''}><summary style="cursor:pointer;font-weight:700;margin:6px 0">📖 Read the lesson</summary>${l[3].map(p=>`<p style="line-height:1.6">${esc(p)}</p>`).join('')}</details><div class="lrow"><label style="font-weight:400;display:inline-flex;gap:8px;align-items:center"><input type="checkbox" style="width:auto" data-i="${i}" ${done[i]?'checked':''}> Mark as completed</label><button type="button" class="tbtn" data-q="${l[0]}">📝 Practice quiz</button><button type="button" class="tbtn" data-ask="${i}">💬 Ask about this</button></div></div>`).join('')}
+$('#les').onchange=e=>{if(e.target.dataset.i!=null){done[e.target.dataset.i]=e.target.checked;store.set('icp_done',done);drawLes()}};
+$('#les').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+if(b.dataset.q){cfg.mode='bank';cfg.topic=b.dataset.q;quizReset();location.hash='tests'}
+else if(b.dataset.ask!=null){const l=LES[+b.dataset.ask];$('#sub').value=l[0];$('#qt').value='Can you help me understand “'+l[1]+'”?';location.hash='ask'}};
+
+
+/* ---- ask ---- */
+let Q=store.get('icp_q',[]),CH=store.get('icp_chat',[]),files=[],busy=false,rec=null;
+const md=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+function drawQ(){$('#msgs').innerHTML=CH.length?CH.map(m=>`<div class="m ${m.r}"><div class="b">${md(m.t)}</div></div>`).join(''):'<p class="note" style="text-align:center;margin:auto">Ask anything — try “how do planes fly?”</p>';$('#msgs').scrollTop=1e9}
+function drawFiles(){$('#fl').innerHTML=files.map((f,i)=>`<span class="chip">📎 ${esc(f.name)} <button type="button" data-r="${i}" aria-label="Remove ${esc(f.name)}">✕</button></span>`).join('')}
+$('#fl').onclick=e=>{if(e.target.dataset.r){files.splice(+e.target.dataset.r,1);drawFiles()}};
+$('#up').onclick=()=>$('#fi').click();
+$('#fi').onchange=e=>{for(const f of e.target.files){if(f.size>10e6)toast(f.name+' is over 10 MB');else files.push(f)}e.target.value='';drawFiles()};
+$('#rec').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition,b=$('#rec');if(!SR)return toast('Voice input is not supported in this browser');if(rec){rec.stop();return}
+rec=new SR();rec.lang='en-US';rec.interimResults=true;const base=$('#qt').value;
+rec.onresult=e=>{$('#qt').value=(base+' '+[...e.results].map(r=>r[0].transcript).join('')).trim()};
+rec.onend=()=>{rec=null;b.classList.remove('on');b.textContent='🎙 Record'};rec.onerror=()=>toast('Microphone unavailable or permission denied');
+try{rec.start();b.classList.add('on');b.textContent='⏹ Stop'}catch(x){rec=null}};
+function offlineTutor(q,sub){const w=(q||'').toLowerCase().split(/\W+/).filter(x=>x.length>3);let best=null,sc=0;LES.forEach(l=>{const tx=(l[0]+' '+l[1]+' '+l[3].join(' ')).toLowerCase(),s=w.filter(k=>tx.includes(k)).length;if(s>sc){sc=s;best=l}});
+return best?'The AI tutor is offline, but your **'+best[1]+'** lesson may help:\n\n'+best[3].join('\n\n'):'The AI tutor is offline right now, so I can’t answer that. Your question was saved. Open this page from its Claude link to chat with the tutor, or browse the lessons under Tutoring.'}
+async function send(){const t=$('#qt').value.trim();if((!t&&!files.length)||busy)return;if(rec)rec.stop();const sub=$('#sub').value;
+CH.push({r:'u',t:(t||'Please help me with the attachment.')+(files.length?'\n📎 '+files.map(f=>f.name).join(', '):'')});
+Q.unshift({s:sub,t:t||'(attachment)',w:new Date().toLocaleString()});store.set('icp_q',Q.slice(0,50));drawRQ();
+const imgs=files.filter(f=>f.type.startsWith('image/')),docs=files.filter(f=>!f.type.startsWith('image/'));let extra='';
+for(const d of docs){if(/^text\/|json|csv/.test(d.type)||/\.(txt|md|csv)$/i.test(d.name))extra+='\n[File '+d.name+']\n'+(await d.text()).slice(0,6000);else extra+='\n[Attached file '+d.name+' — its contents cannot be read in the browser]'}
+files=[];drawFiles();$('#qt').value='';CH.push({r:'a',t:'Thinking…'});drawQ();busy=true;$('#sd').disabled=true;
+try{const sample=window.claude&&await claude.use('sample');if(!sample)throw{code:'none'};
+const prior=CH.slice(0,-1).slice(-7).map(m=>({role:m.r==='u'?'user':'assistant',content:m.t}));
+prior[prior.length-1].content='You are the friendly ICP LearnHub tutor for school students. Explain simply and accurately in short steps, give one real-life example, and end with one quick check question. If an image or file is included, help with what it shows. Keep it under 250 words.\n\nSubject: '+sub+'\n\nStudent question: '+(t||'Please help me with the attached material.')+extra;
+const o={cache:false,onText:({text})=>{CH[CH.length-1].t=text;drawQ()}};
+if(imgs.length){const l=await sample.limits();if(l&&l.images)o.images=imgs.slice(0,3)}
+const r=await sample(prior,o);CH[CH.length-1].t=r.text||'Sorry, I could not answer that.'}
+catch(x){CH[CH.length-1].t=x&&(x.code==='none'||x.code==='not_granted')?offlineTutor(t,sub):'Something went wrong. Please try again in a moment.'}
+finally{busy=false;$('#sd').disabled=false;store.set('icp_chat',CH.slice(-40));drawQ()}}
+$('#sd').onclick=send;$('#qt').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}};
+$('#clr').onclick=()=>{CH=[];store.set('icp_chat',[]);drawQ()};
+function drawRQ(){$('#rq').innerHTML='<b>🕘 Recent questions</b>'+(Q.length?Q.slice(0,5).map((q,i)=>`<div class="ev"><span class="chip">${esc(q.s)}</span><span class="et">${esc(q.t)}<br><span class="note">${esc(q.w)}</span></span><button type="button" class="tbtn" data-rq="${i}">Ask again</button></div>`).join('')+'<button type="button" class="tbtn" id="rqc" style="margin-top:8px">Clear history</button>':'<p class="note">Questions you ask will appear here.</p>')}
+$('#rq').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='rqc'){Q=[];store.set('icp_q',[]);drawRQ();return}
+if(b.dataset.rq!=null){const q=Q[+b.dataset.rq];if(!q)return;$('#sub').value=q.s;$('#qt').value=q.t==='(attachment)'?'':q.t;$('#qt').focus()}};
+/* ---- tests ---- */
+const L='ABCD',BANK=[
+['Mathematics','What is 3/4 + 1/4?',['1','1/2','4/8','3/16'],0,'The denominators match, so add the numerators: 3 + 1 = 4, giving 4/4 = 1.'],
+['Mathematics','Which fraction is equal to 0.25?',['1/2','1/4','2/5','1/5'],1,'0.25 means 25 hundredths, which simplifies to 1/4.'],
+['Mathematics','Solve for x: 2x + 6 = 14',['x = 3','x = 4','x = 5','x = 10'],1,'Subtract 6 from both sides to get 2x = 8, then divide by 2: x = 4.'],
+['English','Which of these words is a noun?',['Run','Table','Quickly','Bright'],1,'A noun names a person, place, thing or idea. “Table” is a thing.'],
+['English','Which sentence is grammatically correct?',['She don’t like apples.','She doesn’t like apples.','She not like apples.','She doesn’t likes apples.'],1,'With “she” we use “doesn’t”, and the main verb stays in its base form: “like”.'],
+['English','Which word is a synonym of “happy”?',['Sad','Joyful','Angry','Tired'],1,'Synonyms have similar meanings. “Joyful” means feeling great happiness.'],
+['Science','Water turning into vapor is called…',['Condensation','Evaporation','Freezing','Melting'],1,'Evaporation is when liquid water gains heat and becomes water vapor.'],
+['Science','Which gas do plants take in for photosynthesis?',['Oxygen','Nitrogen','Carbon dioxide','Hydrogen'],2,'Plants absorb carbon dioxide and, using sunlight, make sugar and release oxygen.'],
+['Science','Which force pulls objects toward the Earth?',['Friction','Gravity','Magnetism','Inertia'],1,'Gravity is the force of attraction between masses; Earth’s gravity pulls things down.'],
+['History','In what year did the Philippines declare independence from Spain?',['1896','1898','1901','1946'],1,'Independence was proclaimed in Kawit, Cavite on June 12, 1898.'],
+['History','Who is widely regarded as the national hero of the Philippines?',['Andres Bonifacio','Emilio Aguinaldo','José Rizal','Apolinario Mabini'],2,'José Rizal, author of Noli Me Tangere, is officially honored as the national hero.'],
+['History','Who founded the Katipunan?',['Andres Bonifacio','José Rizal','Antonio Luna','Marcelo H. del Pilar'],0,'Andres Bonifacio and fellow revolutionaries founded the Katipunan in 1892.']
+].map(([s,q,o,a,e])=>({s,q,o,a,e}));
+let LQ=[],LS=null,cfg={mode:'bank',topic:'All',count:10,instant:true,shuffle:false},qz;
+function quizReset(){let l=cfg.mode==='lesson'&&LQ.length?LQ.slice():BANK.filter(b=>cfg.topic==='All'||b.s===cfg.topic);if(cfg.shuffle)l=l.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);l=l.slice(0,cfg.mode==='lesson'?99:cfg.count);qz={l,i:0,ans:l.map(()=>null),sel:l.map(()=>null),lock:l.map(()=>false),view:'quiz',chat:[],busy:false,draft:''};if($('#qz'))show()}
+function quizDirty(){return qz.view!=='results'&&(qz.ans.some(a=>a!==null)||qz.sel.some(a=>a!==null))}
+const score=()=>qz.ans.reduce((t,a,k)=>t+(a===qz.l[k].a?1:0),0);
+function show(){const z=$('#qz');
+if(qz.view==='quiz'){z.innerHTML=`<div class="qbar" id="qbar"></div><div class="qgrid"><div class="qcard" id="qcard"></div><aside class="qchat" aria-label="Chat"><div class="qch"><b>Chat</b><button type="button" class="tbtn" data-act="cclr">Clear</button></div><div id="qmsgs" role="log" aria-live="polite"></div><div class="chips" id="qchips"></div><div class="cin"><textarea id="qci" rows="2" placeholder="Type a question about this question…" aria-label="Ask about the current question"></textarea><button type="button" data-act="csend" aria-label="Send">➤</button></div></aside></div>`;$('#qci').value=qz.draft||'';drawBar();drawCard();drawChat()}
+else if(qz.view==='review')drawReview();else drawResults()}
+function drawBar(){const n=qz.l.length,a=qz.ans.filter(x=>x!==null).length;$('#qbar').innerHTML=`<span aria-hidden="true" style="font-size:1.6rem">🏆</span><div class="prog" role="progressbar" aria-label="Questions answered" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${a}"><i style="width:${n?a/n*100:0}%"></i></div><span class="cnt">${a} / ${n}</span><button type="button" class="xbtn" data-act="exit">⎋ Exit</button>`}
+function drawCard(){const q=qz.l[qz.i],i=qz.i,n=qz.l.length,c=qz.ans[i],s=qz.sel[i]??c,lk=qz.lock[i],an=qz.ans.filter(x=>x!==null).length;
+let fb='';if(lk){const ok=c===q.a;fb=`<div class="fb ${ok?'ok':'no'}" role="status"><b>${ok?'✔ Correct!':'✘ Not quite. Correct answer: '+L[q.a]}</b><br>${esc(q.e)}</div>`}
+$('#qcard').innerHTML=`<div class="qhead"><select id="qsel" aria-label="Jump to question">${qz.l.map((_,k)=>`<option value="${k}"${k===i?' selected':''}>Question ${k+1}</option>`).join('')}</select><span class="tagp">🏷 ${esc(q.s)}</span><button type="button" class="tbtn" data-act="set">⚙ Quiz Settings</button></div>
+<h3 class="qtx">${esc(q.q)}</h3>
+<div role="radiogroup" aria-label="Answer choices">${q.o.map((t,k)=>{let cl='opt';if(lk){if(k===q.a)cl+=' ok';else if(k===c)cl+=' no'}else if(k===s)cl+=' sel';return `<button type="button" class="${cl}" role="radio" aria-checked="${k===s}" data-act="opt" data-k="${k}"${lk?' disabled':''}><span class="lt">${L[k]}</span><span>${esc(t)}</span></button>`}).join('')}</div>${fb}${!lk&&c!==null?'<p class="note">Answer saved. You can change it and submit again.</p>':''}
+<div class="qnav"><button type="button" class="tbtn" data-act="prev"${i===0?' disabled':''}>← Previous</button><button type="button" class="subm" data-act="sub"${lk?' disabled':''}>${lk?'Answered':'Submit Answer'}</button><button type="button" class="tbtn" data-act="next"${i===n-1?' disabled':''}>Next →</button></div>
+<div class="dots" aria-label="Question navigator">${qz.l.map((_,k)=>`<button type="button" data-act="dot" data-k="${k}" class="dot${k===i?' cur':''}${qz.ans[k]!==null?' dn':''}" aria-label="Question ${k+1}${qz.ans[k]!==null?', answered':''}">${k+1}</button>`).join('')}</div>
+<div class="qfoot"><span class="note">Score: ${cfg.instant?score()+' correct of '+an+' answered':'shown after you submit the test'}</span><button type="button" class="subm" data-act="fin">Review &amp; finish test</button></div>`}
+function drawChat(){$('#qmsgs').innerHTML=qz.chat.length?qz.chat.map(m=>`<div class="m ${m.r}"><div class="b">${md(m.t)}</div></div>`).join(''):'<div class="empty"><h3>Stuck on a question?</h3><p>I can explain concepts or break down questions while you take this quiz.</p></div>';$('#qmsgs').scrollTop=1e9;$('#qchips').innerHTML=['Explain this question','Give me a hint'].map(t=>`<button type="button" data-act="cs">${t}</button>`).join('')}
+async function qchat(text){text=(text||'').trim();if(!text||qz.busy)return;const q=qz.l[qz.i],rev=qz.lock[qz.i];qz.chat.push({r:'u',t:text},{r:'a',t:'Thinking…'});qz.busy=true;drawChat();
+try{const sample=window.claude&&await claude.use('sample');if(!sample)throw{code:'none'};
+const ctx='You are the friendly ICP LearnHub tutor helping a student during a practice quiz. Current question ('+q.s+'): "'+q.q+'" Choices: '+q.o.map((t,k)=>L[k]+') '+t).join(' | ')+'. '+(rev?'The student already submitted this question; the correct answer is '+L[q.a]+') '+q.o[q.a]+'.':'The student has NOT answered yet: explain the concepts and give hints, but do NOT reveal or state which choice is correct.')+' Reply in under 150 words, simply and kindly.';
+const msgs=qz.chat.slice(0,-1).slice(-7).map(m=>({role:m.r==='u'?'user':'assistant',content:m.t}));msgs[msgs.length-1].content=ctx+'\n\nStudent: '+text;
+const r=await sample(msgs,{cache:false,onText:({text})=>{qz.chat[qz.chat.length-1].t=text;drawChat()}});qz.chat[qz.chat.length-1].t=r.text||'Sorry, I could not answer that.'}
+catch(x){qz.chat[qz.chat.length-1].t=x&&(x.code==='none'||x.code==='not_granted')?'The AI tutor is not available (permission was not granted).':'Something went wrong. Please try again in a moment.'}
+finally{qz.busy=false;drawChat()}}
+function drawReview(){const n=qz.l.length,un=qz.ans.filter(a=>a===null).length;
+$('#qz').innerHTML=`<div class="qcard"><h3>Review your answers</h3><p class="note">${n-un} of ${n} answered.${un?' <b>'+un+' unanswered</b> — go back to answer them, or submit anyway.':' Ready to submit.'}</p>${qz.l.map((q,k)=>`<div class="ev"><time>Q${k+1}</time><span style="flex:1">${esc(q.q)}<br><span class="note">Your answer: ${qz.ans[k]===null?'<b>not answered</b>':L[qz.ans[k]]+') '+esc(q.o[qz.ans[k]])}</span></span><button type="button" class="tbtn" data-act="dot" data-k="${k}">${qz.ans[k]===null?'Answer':'View'}</button></div>`).join('')}<div class="qnav"><button type="button" class="tbtn" data-act="back">← Back to questions</button><button type="button" class="subm" data-act="submit">Submit test</button></div></div>`}
+function drawResults(){const n=qz.l.length,s=score(),p=n?Math.round(s/n*100):0;let best=store.get('icp_best',0);if(p>best){best=p;store.set('icp_best',p)}
+const bad=qz.l.map((q,k)=>({q,k})).filter(x=>qz.ans[x.k]!==x.q.a);
+$('#qz').innerHTML=`<div class="qcard res"><div class="big">${s} / ${n}</div><p class="pct">${p}% correct · Best: ${best}%</p><p>${p===100?'Perfect score! 🎉':p>=75?'Great job!':p>=50?'Good effort — review the ones you missed.':'Keep practicing — you’ve got this!'}</p><h3>${bad.length?'Incorrect answers ('+bad.length+')':'No incorrect answers 🎉'}</h3>${bad.map(({q,k})=>`<div class="fb no"><b>Q${k+1}. ${esc(q.q)}</b><br>Your answer: ${qz.ans[k]===null?'not answered':L[qz.ans[k]]+') '+esc(q.o[qz.ans[k]])}<br>Correct answer: <b>${L[q.a]}) ${esc(q.o[q.a])}</b><br><span class="note">${esc(q.e)}</span></div>`).join('')}<div class="qnav"><button type="button" class="tbtn" data-act="set">⚙ Quiz Settings</button><button type="button" class="subm" data-act="retake">Retake test</button><button type="button" class="xbtn" data-act="exit">⎋ Exit</button></div></div>`}
+function goQ(k){if(k<0||k>=qz.l.length)return;qz.i=k;if(qz.view==='quiz')drawCard();else{qz.view='quiz';show()}}
+function sendChat(){const t=$('#qci');if(!t)return;const v=t.value;t.value='';qchat(v)}
+$('#tests').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,k=+b.dataset.k;
+if(a==='opt'){qz.sel[qz.i]=k;drawCard()}
+else if(a==='sub'){const i=qz.i,s=qz.sel[i]??qz.ans[i];if(s==null)return toast('Choose an answer first');qz.ans[i]=s;if(cfg.instant)qz.lock[i]=true;else toast('Answer saved');drawBar();drawCard()}
+else if(a==='prev')goQ(qz.i-1);else if(a==='next')goQ(qz.i+1);else if(a==='dot')goQ(k);
+else if(a==='fin'){const d=$('#qci');if(d)qz.draft=d.value;qz.l.forEach((q,j)=>{if(!qz.lock[j]&&qz.sel[j]!=null)qz.ans[j]=qz.sel[j]});qz.view='review';show()}
+else if(a==='back'){qz.view='quiz';show()}
+else if(a==='submit'){qz.view='results';show()}
+else if(a==='retake')quizReset();
+else if(a==='exit')exitGo();
+else if(a==='cs')qchat(b.textContent);else if(a==='csend')sendChat();
+else if(a==='cclr'){qz.chat=[];drawChat()}
+else if(a==='set'){$('#s5').value=cfg.mode;$('#s5').querySelector('[value=lesson]').disabled=!LQ.length;$('#s1').value=cfg.topic;$('#s2').value=String(cfg.count);$('#s3').checked=cfg.instant;$('#s4').checked=cfg.shuffle;$('#qs').showModal()}});
+$('#tests').addEventListener('change',e=>{if(e.target.id==='qsel')goQ(+e.target.value)});
+$('#tests').addEventListener('keydown',e=>{if(e.target.id==='qci'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+/* ---- lesson upload + generated tests ---- */
+const lpS=m=>{$('#lps').textContent=m},lpE=m=>{$('#lpe').textContent=m};
+const dec=s=>s.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&amp;/g,'&');
+async function unzip(buf){const dv=new DataView(buf),u8=new Uint8Array(buf);let e=u8.length-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw Error('bad zip');
+const n=dv.getUint16(e+10,true);let p=dv.getUint32(e+16,true);const ent={};
+for(let i=0;i<n;i++){if(dv.getUint32(p,true)!==0x02014b50)break;const m=dv.getUint16(p+10,true),cs=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),off=dv.getUint32(p+42,true);ent[new TextDecoder().decode(u8.subarray(p+46,p+46+nl))]={m,cs,off};p+=46+nl+xl+cl}
+return{names:Object.keys(ent),async read(nm){const f=ent[nm];if(!f)return '';const ln=dv.getUint16(f.off+26,true),lx=dv.getUint16(f.off+28,true),s=f.off+30+ln+lx,d=u8.subarray(s,s+f.cs);if(f.m===0)return new TextDecoder().decode(d);return await new Response(new Blob([d]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text()}}}
+async function officeText(buf,kind){if(typeof DecompressionStream==='undefined')throw Error('This browser cannot open DOCX or PPTX files. Try a PDF or TXT file instead.');
+let z;try{z=await unzip(buf)}catch(x){throw Error('This file does not look like a valid '+kind.toUpperCase()+' file.')}
+let out='';if(kind==='docx'){const x=await z.read('word/document.xml');if(!x)throw Error('No document text found in this DOCX file.');out=x.replace(/<w:tab\/>/g,' ').replace(/<\/w:p>/g,'\n').replace(/<[^>]+>/g,'')}
+else{const sl=z.names.filter(n=>/^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a,b)=>parseInt(a.match(/\d+/g).pop())-parseInt(b.match(/\d+/g).pop()));if(!sl.length)throw Error('No slides found in this PPTX file.');for(const n of sl)out+=(await z.read(n)).replace(/<\/a:p>/g,'\n').replace(/<[^>]+>/g,'')+'\n'}
+return dec(out)}
+function loadScript(u){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=u;s.onload=res;s.onerror=()=>rej(Error('Could not load the PDF reader. Check your connection and try again.'));document.head.appendChild(s)})}
+async function pdfText(buf){if(!window.pdfjsLib){const b='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';await loadScript(b+'pdf.min.js');await loadScript(b+'pdf.worker.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc=b+'pdf.worker.min.js'}
+const d=await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise;let t='';for(let i=1;i<=Math.min(d.numPages,40);i++){const c=await(await d.getPage(i)).getTextContent();t+=c.items.map(x=>x.str).join(' ')+'\n'}return t}
+async function readImage(f){const sample=window.claude&&await claude.use('sample');if(!sample)throw Error('Reading images needs the AI tutor, which is not available right now. Try a PDF, DOCX, PPTX or TXT file.');const l=await sample.limits();if(!l||!l.images)throw Error('Image reading is not available right now. Try a PDF, DOCX, PPTX or TXT file.');
+const r=await sample('Transcribe all of the lesson content in this image as plain text, including headings, definitions, formulas and diagram labels. If it contains no readable lesson material, reply with exactly: NO TEXT',{images:[f],cache:false});return /^\s*NO TEXT/i.test(r.text)?'':r.text}
+async function loadLesson(f){lpE('');const ext=(f.name.split('.').pop()||'').toLowerCase(),img=f.type.startsWith('image/')||['png','jpg','jpeg','webp','gif'].includes(ext);
+if(f.size>15e6)return lpE('That file is over 15 MB. Please choose a smaller file.');
+if(!img&&!['pdf','docx','pptx','txt'].includes(ext))return lpE('Unsupported file type. Please upload a PDF, DOCX, PPTX, TXT or image file.');
+lpS('Reading '+f.name+'…');$('#lpu').disabled=true;
+try{let text='',data=null;
+if(ext==='txt')text=await f.text();else if(ext==='pdf')text=await pdfText(await f.arrayBuffer());else if(ext==='docx'||ext==='pptx')text=await officeText(await f.arrayBuffer(),ext);
+else{data=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});text=await readImage(f)}
+text=text.replace(/[ \t]+/g,' ').replace(/\n\s*\n+/g,'\n').trim();
+if(text.length<150)throw Error(img?'I could not find enough readable text in this image. Try a clearer photo.':'Not enough readable text found. If this is a scanned file, upload it as an image instead.');
+LS={name:f.name,size:f.size,text,img:data};LQ=[];if(cfg.mode==='lesson'){cfg.mode='bank';quizReset()}
+$('#lpname').textContent='📄 '+f.name+' · '+Math.max(1,Math.round(f.size/1024))+' KB · '+text.split(/\s+/).length+' words';$('#lpi').hidden=false;$('#lpg').hidden=false;lpS('Lesson ready. Choose the number of questions and difficulty, then generate your test.')}
+catch(x){lpS('');lpE((x&&x.message)||'Sorry, this file could not be processed.')}
+finally{$('#lpu').disabled=false}}
+$('#lpu').onclick=$('#lpr').onclick=()=>$('#lpf').click();
+$('#lpf').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)loadLesson(f)};
+$('#lpx').onclick=()=>{LS=null;LQ=[];$('#lpi').hidden=true;$('#lpg').hidden=true;lpE('');lpS('Lesson removed.');if(cfg.mode==='lesson'){cfg.mode='bank';quizReset()}};
+$('#lpp').onclick=()=>{if(!LS)return;$('#lpvt').textContent=LS.name;$('#lpvb').innerHTML=(LS.img?'<img src="'+LS.img+'" alt="Uploaded lesson" style="max-width:100%;border-radius:10px">':'')+'<p class="note">'+(LS.img?'Text read from the image:':'Text read from the file:')+'</p><pre>'+esc(LS.text.slice(0,4000))+(LS.text.length>4000?'\n…':'')+'</pre>';$('#lpv').showModal()};
+$('#lpvc').onclick=()=>$('#lpv').close();
+$('#lpgo').onclick=async()=>{if(!LS)return;lpE('');const n=+$('#lpn').value,dif=$('#lpd').value,b=$('#lpgo');b.disabled=true;lpS('Generating '+n+' '+dif.toLowerCase()+' questions from your lesson…');
+try{const sample=window.claude&&await claude.use('sample');if(!sample)throw Error('The AI question writer is not available (permission was not granted).');
+const body=LS.text.slice(0,14000);
+const r=await sample(`You write multiple-choice practice questions for school students. Using ONLY the lesson below, write exactly ${n} questions at ${dif} difficulty (Easy = recall of key facts, Medium = understanding, Hard = application and reasoning). Each question has exactly 4 choices and exactly one correct answer; make the wrong choices plausible. Add a 1-2 sentence explanation of why the correct answer is right, without mentioning letters. Respond with ONLY a JSON array, no markdown, in this form: [{"q":"question","o":["choice","choice","choice","choice"],"a":0,"e":"explanation"}] where a is the index (0-3) of the correct choice.\n\nLESSON:\n${body}`,{cache:false});
+let t=r.text.trim(),i=t.indexOf('['),j=t.lastIndexOf(']'),arr;try{arr=JSON.parse(t.slice(i,j+1))}catch(x){throw Error(r.truncated?'The test was too long to finish. Try fewer questions.':'I could not build a test from this lesson. Please try again.')}
+const tag='📄 '+(LS.name.length>22?LS.name.slice(0,20)+'…':LS.name)+' · '+dif;
+const ok=(Array.isArray(arr)?arr:[]).filter(x=>x&&typeof x.q==='string'&&Array.isArray(x.o)&&x.o.length===4&&Number.isInteger(x.a)&&x.a>=0&&x.a<4).map(x=>{const ord=[0,1,2,3].sort(()=>Math.random()-.5);return{s:tag,q:x.q,o:ord.map(k=>String(x.o[k])),a:ord.indexOf(x.a),e:String(x.e||'')}});
+if(!ok.length)throw Error('I could not build valid questions from this lesson. Try a longer or clearer lesson.');
+LQ=ok;cfg.mode='lesson';quizReset();lpS(ok.length+' questions ready'+(LS.text.length>14000?' (made from the first part of a long lesson)':'')+'. Good luck!');$('#qz').scrollIntoView({behavior:'smooth'})}
+catch(x){lpS('');lpE((x&&x.message)||'Something went wrong while generating the test.')}finally{b.disabled=false}};
+$('#sx').onclick=()=>$('#qs').close();
+$('#sa').onclick=()=>{cfg={mode:$('#s5').value,topic:$('#s1').value,count:+$('#s2').value,instant:$('#s3').checked,shuffle:$('#s4').checked};$('#qs').close();quizReset();toast('Quiz restarted with new settings')};
+quizReset();
+/* ---- search ---- */
+$('#srch').onsubmit=e=>{e.preventDefault();const t=$('#q').value.toLowerCase().trim(),r=$('#sres');if(!t){r.hidden=true;return}
+const hits=[...LES.filter(l=>(l[0]+l[1]+l[3].join(' ')).toLowerCase().includes(t)).map(l=>({h:`📖 ${esc(l[1])} (${l[0]})`,to:'tutoring'})),...Q.filter(q=>q.t.toLowerCase().includes(t)).map(q=>({h:'💬 '+esc(q.t),to:'ask'})),...EV.filter(v=>v.t.toLowerCase().includes(t)).map(v=>({h:`📅 ${esc(v.t)} — ${v.d}`,to:'calendar',d:v.d}))];
+r.hidden=false;r.innerHTML=hits.length?hits.map(x=>`<button type="button" class="tbtn" style="display:block;width:100%;text-align:left;margin:4px 0" data-to="${x.to}" data-d="${x.d||''}">${x.h}</button>`).join(''):'No results found.'};
+$('#sres').onclick=e=>{const b=e.target.closest('[data-to]');if(!b)return;if(b.dataset.d){view=new Date(b.dataset.d+'T00:00');view.setDate(1)}location.hash=b.dataset.to};
+/* ---- auth ---- */
+let user=store.get('icp_user',null);
+function authUI(){const a=$('#auth');a.textContent=user?'@'+user.n.toUpperCase():'LOGIN';a.href=user?'#dashboard':'#login';$('#lo').hidden=!user;$('#cta').textContent=user?'Go to dashboard →':'Start for free →';$('#cta').href=user?'#dashboard':'#signup'}
+const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+let acct=store.get('icp_acct',null);
+$('#sf').onsubmit=async e=>{e.preventDefault();const nm=$('#fn').value.trim();acct={n:nm.replace(/\s+/g,''),e:$('#em').value.trim().toLowerCase(),h:await sha($('#pw').value)};store.set('icp_acct',acct);user={n:acct.n};store.set('icp_user',user);clearForms();authUI();toast('Welcome, '+nm+'!');location.hash='dashboard'};
+$('#lf').onsubmit=async e=>{e.preventDefault();const h=await sha($('#lp').value);if(acct&&acct.e===$('#le').value.trim().toLowerCase()&&acct.h===h){user={n:acct.n};store.set('icp_user',user);clearForms();$('#lerr').textContent='';authUI();location.hash='dashboard'}else $('#lerr').textContent='Email or password not recognized on this device. If you are new, create an account first.'};
+$('#lo').onclick=()=>{user=null;store.set('icp_user',null);authUI();clearForms();if(location.hash==='#home')route();else location.hash='home';toast('Logged out')};
+/* ---- exit / back ---- */
+let tgt='home',tgtK=null,curPage='',NAV=[],popTo=null,SY={};try{NAV=JSON.parse(sessionStorage.getItem('icp_nav')||'[]');if(!Array.isArray(NAV))NAV=[]}catch(e){NAV=[]}addEventListener('scroll',()=>{SY[curPage]=scrollY},{passive:true});
+function hasUnsaved(){const p=location.hash.slice(1);
+if(p==='ask')return !!($('#qt').value.trim()||files.length);
+if(p==='signup')return ['fn','ln','em','pw'].some(i=>$('#'+i).value);
+if(p==='login')return !!($('#le').value||$('#lp').value);
+if(p==='tests')return quizDirty();return false}
+function clearForms(){$$('#sf,#lf').forEach(f=>f.reset());files=[];drawFiles();$('#qt').value='';quizReset();if(rec)rec.stop()}
+function leave(t,k){resetPage(location.hash.slice(1));popTo=k==null?null:k;if(location.hash.slice(1)===t||(!location.hash&&t==='home')){route();if(t==='home')toast('You are on the Welcome page')}else location.hash=t}
+function go(t,k){tgt=t;tgtK=k;if(hasUnsaved())$('#dlg').showModal();else leave(t,k)}
+function resetPage(p){if(p==='tests')quizReset();else if(p==='ask'){$('#qt').value='';files=[];drawFiles();if(rec)rec.stop()}else if(p==='signup')$('#sf').reset();else if(p==='login')$('#lf').reset()}
+function exitIdx(){const cur=NAV[NAV.length-1];for(let k=NAV.length-2;k>=0;k--){const t=NAV[k];if(t!==cur&&!(user&&(t==='signup'||t==='login')))return k}return -1}
+function exitGo(){const k=exitIdx();if(k>=0)return go(NAV[k],k);const c=location.hash.slice(1);go(user&&c&&c!=='home'&&c!=='dashboard'?'dashboard':'home')}
+$('#exit').onclick=exitGo;$('#bk').onclick=()=>go('dashboard');
+$('#stay').onclick=()=>$('#dlg').close();$('#go').onclick=()=>{$('#dlg').close();leave(tgt,tgtK)};
+addEventListener('beforeunload',e=>{if(hasUnsaved()){e.preventDefault();e.returnValue=''}});
+$('#goog').onclick=()=>toast('Google sign-in needs your school’s OAuth setup');
+/* ---- router ---- */
+const PAGES=['home','signup','login','dashboard','calendar','tutoring','ask','tests'];
+function route(){let p=location.hash.slice(1);if(!PAGES.includes(p))p='home';
+if(p!=='home'&&p!=='signup'&&p!=='login'&&!user){p='login'}
+$$('.page').forEach(s=>s.classList.toggle('on',s.id===p));
+$$('nav a').forEach(a=>a.getAttribute('href')==='#'+p?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+setMenu(false);const back=popTo!=null;curPage=p;if(back)NAV.length=popTo+1;else if(NAV[NAV.length-1]!==p){NAV.push(p);if(NAV.length>40)NAV.shift()}popTo=null;try{sessionStorage.setItem('icp_nav',JSON.stringify(NAV))}catch(e){}
+if(p==='calendar')drawCal();
+window.scrollTo(0,back?(SY[p]||0):0)}
+function setMenu(o){$('#nav').classList.toggle('open',o);$('#menu').setAttribute('aria-expanded',o);$('#menu').textContent=o?'✕':'☰'}
+$('#menu').onclick=e=>{e.stopPropagation();setMenu(!$('#nav').classList.contains('open'))};
+document.addEventListener('click',e=>{if(!e.target.closest('#nav,#menu'))setMenu(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
+$('#nav').addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});
+addEventListener('resize',()=>{if(innerWidth>960)setMenu(false)});
+addEventListener('hashchange',route);
+authUI();drawLes();drawQ();drawRQ();bell();route();
+</script></body></html>
